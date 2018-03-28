@@ -1,0 +1,14 @@
+[
+	{"ops":"add_vlan", "ifc":"eth0", "tag":100},
+	{"ops":"add_bridge", "bridge":"br0"},
+	{"ops":"add_bridge", "bridge":"br1"},
+	{"ops":"add_brifc", "bridge":"br0", "ifc":"eth0"},
+	{"ops":"add_brifc", "bridge":"br1", "ifc":"eth0.100"},
+	{"ops":"up_ifc", "ifc":"eth0"},
+	{"ops":"up_ifc", "ifc":"eth0.100"},
+	{"ops":"up_ifc", "ifc":"br0"},
+	{"ops":"up_ifc", "ifc":"br1"},
+	{"ops":"static_ifc", "ifc":"br1", "address":"192.168.200.1", "netmask":"255.255.255.0"},
+	{"ops":"dhcp_ifc", "ifc":"br0"}
+]
+

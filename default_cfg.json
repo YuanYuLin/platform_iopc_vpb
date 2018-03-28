@@ -1,0 +1,18 @@
+[
+{"config_version":{"major":0, "minor":0, "aux":0}},
+{"configs":["netifc_count", "storage_count"]},
+
+{"netifc_count":["netifc_1", "netifc_2",  "netifc_3", "netifc_4"]},
+{"netifc_1":{"visable":1, "editable":0, "type":"eth", "name":"eth0", "vlan":0, "tag":0, "devices":[], "src":"none"}},
+{"netifc_2":{"visable":1, "editable":0, "type":"eth", "name":"eth0", "vlan":1, "tag":100, "devices":[], "src":"none"}},
+{"netifc_3":{"visable":1, "editable":1, "type":"bridge", "name":"br0", "vlan":0, "tag":0, "devices":["eth0"], "src":"dhcp"}},
+{"netifc_4":{"visable":1, "editable":1, "type":"bridge", "name":"br1", "vlan":0, "tag":0, "devices":["eth0.100"], "src":"static", "address":"192.168.200.1", "netmask":"255.255.255.0"}},
+
+{"storage_count":["storage_1"]},
+{"storage_1":{"device":"/dev/sda", "start":0, "end":262143, "sector_size":512, "media_type":"hdd", "partitions":["sda_part_1", "sda_part_2", "sda_part_3", "sda_part_4"]}},
+{"sda_part_1":{"visable":1, "formatable":0, "type":"fat", "src":"/dev/sda1", "dst":"/hdd/sys", "label":"system", "start":2048, "sectors":102400}},
+{"sda_part_2":{"visable":0, "formatable":0, "type":"sysdao", "src":"", "dst":"", "label":"sysdao1", "start":104448, "sectors":10240}},
+{"sda_part_3":{"visable":0, "formatable":0, "type":"sysdao", "src":"", "dst":"", "label":"sysdao2", "start":114688, "sectors":10240}},
+{"sda_part_4":{"visable":1, "formatable":0, "type":"fat", "src":"/dev/sda2", "dst":"/hdd/data", "label":"data", "start":124928, "sectors":262143}}
+]
+
