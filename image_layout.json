@@ -1,0 +1,10 @@
+{
+"parts":["part_dao1", "part_daobk", "part1", "part2"],
+"part_dao1"	:{"boot":0, "fstype":"iopcdao", "start":"1114112B", "end":"1605631B", "bin_files":["db_init.bin"]},
+"part_daobk"	:{"boot":0, "fstype":"iopcdaobk", "start":"1605632B", "end":"2097151B", "bin_files":["db_init.bin"]},
+"part1"		:{"boot":1, "fstype":"fat32", "start":"2097152B", "end":"52428799B", "bin_files":["linux_image", "kmod.squashfs", "rootfs.squashfs", "db_init.bin"]},
+"part2"		:{"boot":0, "fstype":"ext4", "start":"52428800B", "end":"100%", "bin_files":[]},
+"table_type":"gpt",
+"platform":"VPD",
+"platform_id":0
+}
