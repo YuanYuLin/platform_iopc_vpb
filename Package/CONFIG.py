@@ -5,23 +5,26 @@ pkg_path = ""
 output_dir = ""
 arch = ""
 output_platform_dir = ""
-src_image_cfg = ""
-dao_file = "dao.ini"
-dao_script = "dao.py"
+#dao_file = "dao.ini"
+dao_files = ["dao"]
 
 def set_global(args):
     global pkg_path
     global output_dir
     global arch
-    global src_image_cfg
     global output_platform_dir
+    global install_platform_dao
+    global dao_script
 
     pkg_path = args["pkg_path"]
     output_dir = args["output_path"]
     arch = ops.getEnv("ARCH_ALT")
-    src_image_cfg = ops.path_join(pkg_path, dao_file)
     output_platform_dir = ops.path_join(iopc.getOutputRootDir(), "platform")
-    #dst_include_dir = ops.path_join("include",args["pkg_name"])
+    dao_script = ops.path_join(output_platform_dir, "dao.py")
+
+    install_platform_dao = False
+    if ops.getEnv("INSTALL_PLATFORM_DAO") == 'y' :
+        install_platform_dao = True
 
 def MAIN_ENV(args):
     set_global(args)
@@ -32,9 +35,10 @@ def MAIN_EXTRACT(args):
     set_global(args)
 
     ops.mkdir(output_platform_dir)
-    ops.copyto(src_image_cfg, ops.path_join(output_platform_dir, dao_file))
-    ops.copyto(ops.path_join(pkg_path, dao_script), output_dir)
-    ops.copyto(ops.path_join(pkg_path, dao_file), output_dir)
+    for ini in dao_files:
+        dao_file = ops.path_join(pkg_path, ini + ".ini")
+        ops.copyto(dao_file, output_platform_dir)
+        ops.copyto(dao_file, output_dir)
 
     return True
 
@@ -55,17 +59,37 @@ def MAIN_CONFIGURE(args):
 def MAIN_BUILD(args):
     set_global(args)
 
-    CMD=['python', dao_script, dao_file]
-    ops.execCmd(CMD, output_dir, False)
+    if install_platform_dao == True :
+        for ini in dao_files:
+            dao_file = ops.path_join(output_platform_dir, ini + ".ini")
+            dao_bin = ops.path_join(output_platform_dir, ini + ".bin")
+            CMD=['python', dao_script, dao_file, dao_bin]
+            print CMD
+            ops.execCmd(CMD, output_dir, False)
 
     return False
 
 def MAIN_INSTALL(args):
     set_global(args)
 
-    #iopc.installBin(args["pkg_name"], ops.path_join(dst_usr_lib_dir, "."), "usr/lib")
-    ops.copyto(ops.path_join(output_dir, 'db_init.bin'), iopc.getOutputRootDir())
-    #iopc.installBin(args["pkg_name"], ops.path_join(output_dir, "db_init.inc"), dst_include_dir)
+    if install_platform_dao == True :
+        #iopc.installBin(args["pkg_name"], ops.path_join(dst_usr_lib_dir, "."), "usr/lib")
+        #ops.copyto(ops.path_join(output_dir, 'db_init.bin'), iopc.getOutputRootDir())
+        #ops.copyto(ops.path_join(output_dir, 'img_header.bin'), iopc.getOutputRootDir())
+        iopc.installBin(args["pkg_name"], ops.path_join(output_dir, "db_init.inc"), 'include/platform')
+
+    return False
+
+def MAIN_SDKENV(args):
+    set_global(args)
+    return False
+
+def MAIN_SDKENV(args):
+    set_global(args)
+
+    cflags = ""
+    cflags += " -I" + ops.path_join(iopc.getSdkPath(), 'usr/include/platform')
+    iopc.add_includes(cflags)
 
     return False
 
